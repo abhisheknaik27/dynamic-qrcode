@@ -27,7 +27,7 @@ const QRUi = () => {
       destinationUrl: url,
     });
     setShortCode(response.data.shortCode);
-    setDestinationUrl(url);
+    // setDestinationUrl(url);
 
     setUrl("");
   };
@@ -51,7 +51,7 @@ const QRUi = () => {
     });
 
     alert("URL Updated Successfully");
-    setDestinationUrl(url);
+    // setDestinationUrl(url);
     console.log(url, shortCode, destinationUrl);
   };
   const downloadPNG = async () => {
@@ -78,7 +78,8 @@ const QRUi = () => {
 
   const reloadPage = () => {
     setUrl("");
-    setQrCodeVal("");
+    setDestinationUrl("");
+    setShortCode("");
   };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">

@@ -34,7 +34,7 @@ app.post('/api/qrCode', async (req, res) => {
 
         res.status(200).json({
             shortCode,
-            qrCodeUrl: `localhost:2000/${shortCode}`
+            qrCodeUrl: `localhost:2000/api/qrCode/${shortCode}`
         });
     } catch(err){
         console.log("Error creating QR code:", err);
@@ -71,7 +71,7 @@ app.put('/api/qrCode/:shortCode', async (req, res) => {
     }
 });
 
-app.get('/:shortCode', async(req, res) => {
+app.get('api/qrCode/:shortCode', async(req, res) => {
     try{
         await mongoose.connect("mongodb+srv://admin:admin@qrcodeapp.v84he.mongodb.net/qrCodeApp");
 
