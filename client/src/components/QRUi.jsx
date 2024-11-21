@@ -38,7 +38,7 @@ const QRUi = () => {
     const response = await axios.get(
       `http://localhost:2000/api/qrCode/${shortCode}`
     );
-    setDestinationUrl(response.data.desinationUrl);
+    setDestinationUrl(response.data.destinationUrl);
   };
 
   const updateQr = async () => {
@@ -47,9 +47,12 @@ const QRUi = () => {
       return;
     }
     await axios.put(`http://localhost:2000/api/qrCode/${shortCode}`, {
-      destinationUrl,
+      destinationUrl: url,
     });
+
     alert("URL Updated Successfully");
+    setDestinationUrl(url);
+    console.log(url, shortCode, destinationUrl);
   };
   const downloadPNG = async () => {
     if (!shortCode) {

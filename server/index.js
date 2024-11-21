@@ -86,6 +86,7 @@ app.get('/:shortCode', async(req, res) => {
 
         await qrCode.save();
         res.redirect(qrCode.destinationUrl);
+        // res.json(qrCode);
     } catch(err){
         console.error("Error getting QR code:", err);
         res.status(500).json({ message: "Internal server error", error: err.message });
