@@ -1,12 +1,14 @@
-import React from 'react'
-import QRCodeGenerator from './components/QRCodeGenerator'
+import React from "react";
+import QRCodeGenerator from "./components/QRCodeGenerator";
+import QRUi from "./components/QRUi";
 
 const App = () => {
   return (
     <div>
-      <QRCodeGenerator />
+      {/* <QRCodeGenerator /> */}
+      <QRUi />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
