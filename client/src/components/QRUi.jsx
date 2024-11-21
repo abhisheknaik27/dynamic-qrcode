@@ -1,24 +1,58 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import QRCode from "react-qr-code";
 import { saveAs } from "file-saver";
 import html2canvas from "html2canvas";
+import axios from "axios";
 
 const QRUi = () => {
   const [url, setUrl] = useState("");
-  const [qrCodeVal, setQrCodeVal] = useState("");
+  const [shortCode, setShortCode] = useState("");
+  const [destinationUrl, setDestinationUrl] = useState("");
+
   const qrRef = useRef(null);
 
-  const generateQr = () => {
-    if (url) {
-      setQrCodeVal(url);
-      setUrl("");
-    } else {
-      alert("Enter Valid URL");
+  useEffect(() => {
+    if (shortCode) {
+      fetchQrCode();
     }
+  }, [shortCode]);
+
+  const generateQr = async () => {
+    if (!url) {
+      alert("Enter Valid URL");
+      return;
+    }
+
+    const response = await axios.post("http://localhost:2000/api/qrCode", {
+      destinationUrl: url,
+    });
+    setShortCode(response.data.shortCode);
+    setDestinationUrl(url);
+
+    setUrl("");
   };
 
+  const fetchQrCode = async () => {
+    if (!shortCode) return;
+
+    const response = await axios.get(
+      `http://localhost:2000/api/qrCode/${shortCode}`
+    );
+    setDestinationUrl(response.data.desinationUrl);
+  };
+
+  const updateQr = async () => {
+    if (!destinationUrl) {
+      alert("Enter Valid URL");
+      return;
+    }
+    await axios.put(`http://localhost:2000/api/qrCode/${shortCode}`, {
+      destinationUrl,
+    });
+    alert("URL Updated Successfully");
+  };
   const downloadPNG = async () => {
-    if (!qrCodeVal) {
+    if (!shortCode) {
       alert("Generate a QR Code first");
       return;
     }
@@ -29,7 +63,7 @@ const QRUi = () => {
   };
 
   const downloadSVG = () => {
-    if (!qrCodeVal) {
+    if (!shortCode) {
       alert("Generate a QR Code first");
       return;
     }
@@ -47,21 +81,23 @@ const QRUi = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-md">
         <div className="p-6 border-b border-gray-200">
-          <div
-            ref={qrRef}
-            className="flex items-center justify-center w-full h-40 bg-gray-50 border border-dashed border-gray-300 rounded-lg "
-          >
-            {qrCodeVal ? (
-              <QRCode className="p-2" value={qrCodeVal} size={150} />
+          <div className="flex items-center justify-center w-full h-40 bg-gray-50 border border-dashed border-gray-300 rounded-lg ">
+            {shortCode ? (
+              <QRCode
+                className="p-2"
+                value={`http://localhost:2000/${shortCode}`}
+                size={150}
+                ref={qrRef}
+              />
             ) : (
               <p className="text-gray-400">QR Code will appear here</p>
             )}
           </div>
 
-          {qrCodeVal && (
+          {shortCode && (
             <div>
               <h1 className="text-center mt-4 bg-blue-100 rounded-sm font-semibold p-2">
-                {qrCodeVal}
+                Current URL: {destinationUrl}
               </h1>
               <div className="flex justify-evenly mt-4 ">
                 <button
@@ -95,13 +131,22 @@ const QRUi = () => {
               className="w-full p-3 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
             />
           </div>
+          {shortCode ? (
+            <button
+              onClick={updateQr}
+              className="w-full bg-blue-400 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+            >
+              Update QR
+            </button>
+          ) : (
+            <button
+              onClick={generateQr}
+              className="w-full bg-blue-400 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+            >
+              Generate QR Code
+            </button>
+          )}
 
-          <button
-            onClick={generateQr}
-            className="w-full bg-blue-400 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-          >
-            Generate QR Code
-          </button>
           <button
             onClick={reloadPage}
             className="w-full bg-blue-300 text-white py-2 mt-4 rounded-lg hover:bg-blue-400 transition"
