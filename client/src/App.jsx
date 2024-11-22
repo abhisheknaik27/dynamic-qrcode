@@ -1,10 +1,10 @@
 import React from "react";
-import QRUi from "./components/QRUi";
+import QrCodeGenerator from "./components/QRCodeGenerator";
 
 const App = () => {
   return (
     <div>
-      <QRUi />
+      <QrCodeGenerator />
     </div>
   );
 };

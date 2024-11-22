@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import QRCode from "react-qr-code";
-import DownloadPngButton from "./DownloadPngButton";
-import DownloadSvgButton from "./DownloadSvgButton";
+import DownloadPngButton from "./buttons/DownloadPngButton";
+import DownloadSvgButton from "./buttons/DownloadSvgButton";
 import axios from "axios";
-import InputButton from "./InputButton";
-const QRUi = () => {
+const QrCodeGenerator = () => {
   const [url, setUrl] = useState("");
   const [shortCode, setShortCode] = useState("");
   const [destinationUrl, setDestinationUrl] = useState("");
@@ -99,9 +98,9 @@ const QRUi = () => {
                 <p className="text-gray-400">Current Link</p>
                 <p className="text-gray-800 mb-3">{destinationUrl}</p>
               </div>
-              <div className="flex border-t-2 pt-3 flex-col justify-center items-center overflow-clip">
+              <div className="flex p-3 border-t-2 flex-col justify-center items-center">
                 <p className="text-gray-400">Static Link</p>
-                <p className="text-gray-800">
+                <p className="text-gray-800 break-words">
                   {`http://localhost:2000/api/qrCode/${shortCode}`}
                 </p>
               </div>
@@ -169,4 +168,4 @@ const QRUi = () => {
   );
 };
 
-export default QRUi;
+export default QrCodeGenerator;
