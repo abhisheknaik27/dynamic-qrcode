@@ -1,17 +1,34 @@
 # Dynamic QR Code Generator
 
-Dynamic QR Code Generator application allows users to generate a dynamic QR code that links to a website, update its destination URL, and download the QR code in PNG or SVG format.
+The **Dynamic QR Code Generator** application allows users to generate a dynamic QR code that links to a website, update its destination URL, and download the QR code in PNG or SVG format.
 
 ## Features
-### Dynamic QR Code Generation: Users can generate QR codes that point to URLs.
-### Update URL: Users can update the destination URL of an existing QR code without changing the QR code itself.
-### Download Options: Users can download the QR code as PNG or SVG.
-### Responsive UI: The application has a responsive UI built with Tailwind CSS.
-### Backend Integration: The backend is powered by Node.js with Express and MongoDB.
+
+- **Dynamic QR Code Generation**: Generate QR codes that point to URLs.
+- **Update URL**: Update the destination URL of an existing QR code without changing the QR code itself.
+- **Download Options**: Download the QR code as PNG or SVG.
+- **Responsive UI**: A responsive user interface built with **Tailwind CSS**.
+- **Backend Integration**: Powered by **Node.js**, **Express**, and **MongoDB** for backend functionality.
 
 ## Technologies
-Frontend: React, Tailwind CSS, react-qr-code, html2canvas, file-saver
-Backend: Node.js, Express, MongoDB
-Database: MongoDB (hosted on MongoDB Atlas)
-Development Tools: npm, Postman (for API testing)
-Packages: react-qr-code(to generate qr); html2canvas , file-saver (to save image), axios (backend connection)
+
+### Frontend:
+
+- **React**: For building the dynamic user interface.
+- **Tailwind CSS**: For fast styling and a responsive UI.
+- **react-qr-code**: To generate QR codes based on a URL.
+- **html2canvas**: To capture the QR code as an image.
+- **file-saver**: To allow users to download the QR code in PNG or SVG format.
+- **axios**: For making HTTP requests to the backend.
+
+### Backend:
+
+- **Node.js**: JavaScript runtime used for building the backend server.
+- **Express**: Web framework for Node.js to handle routing.
+- **MongoDB**: Database to store information about generated QR codes.
+- **MongoDB Atlas**: Cloud-based MongoDB hosting service.
+
+### Development Tools:
+
+- **npm**: Package manager to install dependencies.
+- **Postman**: API testing tool to test backend endpoints.
