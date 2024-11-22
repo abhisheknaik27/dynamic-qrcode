@@ -1,6 +1,8 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
-require('dotenv').config();
+
 const cors = require('cors');
 const qrCodeModel = require('./Model/qrCodeSchema');
 
@@ -9,9 +11,21 @@ app.use(express.json());
 app.use(cors());
 //mongdb connect
 
+const mongoURL = process.env.MONGO_URL;
+
+mongoose.connect(mongoURL)
+    .then(() => {
+        console.log('connected to mongoDB');
+    })
+    .catch(() => {
+        console.log('error connecting mongo');
+
+    });
+
 app.get('/api/qrCodes', async(req, res) => {
     try{
-        await mongoose.connect("mongodb+srv://admin:admin@qrcodeapp.v84he.mongodb.net/qrCodeApp");
+        //await mongoose.connect(process.env.MONGO_URL);
+        //await mongoose.connect("mongodb+srv://admin:admin@qrcodeapp.v84he.mongodb.net/qrCodeApp");
         const qrCodes = await qrCodeModel.find({});
         res.status(200).json(qrCodes);
     }catch(err){
@@ -22,7 +36,8 @@ app.get('/api/qrCodes', async(req, res) => {
 
 app.post('/api/qrCode', async (req, res) => {
     try{
-        await mongoose.connect("mongodb+srv://admin:admin@qrcodeapp.v84he.mongodb.net/qrCodeApp");
+        //await mongoose.connect(process.env.MONGO_URL);
+        // await mongoose.connect("mongodb+srv://admin:admin@qrcodeapp.v84he.mongodb.net/qrCodeApp");
 
         const { destinationUrl } = req.body;
         const shortCode = Math.random().toString(36).substr(2,8);
@@ -46,7 +61,7 @@ app.post('/api/qrCode', async (req, res) => {
 app.put('/api/qrCode/:shortCode', async (req, res) => {
 
     try{
-        await mongoose.connect("mongodb+srv://admin:admin@qrcodeapp.v84he.mongodb.net/qrCodeApp");
+        //await mongoose.connect("mongodb+srv://admin:admin@qrcodeapp.v84he.mongodb.net/qrCodeApp");
 
         const shortCode = req.params.shortCode;
         const { destinationUrl } = req.body;
@@ -73,7 +88,7 @@ app.put('/api/qrCode/:shortCode', async (req, res) => {
 
 app.get('/api/qrCode/:shortCode', async(req, res) => {
     try{
-        await mongoose.connect("mongodb+srv://admin:admin@qrcodeapp.v84he.mongodb.net/qrCodeApp");
+        //await mongoose.connect("mongodb+srv://admin:admin@qrcodeapp.v84he.mongodb.net/qrCodeApp");
 
         const { shortCode } = req.params;
         
