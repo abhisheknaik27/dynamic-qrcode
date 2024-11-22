@@ -71,7 +71,7 @@ app.put('/api/qrCode/:shortCode', async (req, res) => {
     }
 });
 
-app.get('api/qrCode/:shortCode', async(req, res) => {
+app.get('/api/qrCode/:shortCode', async(req, res) => {
     try{
         await mongoose.connect("mongodb+srv://admin:admin@qrcodeapp.v84he.mongodb.net/qrCodeApp");
 
@@ -85,8 +85,8 @@ app.get('api/qrCode/:shortCode', async(req, res) => {
         qrCode.analytics.lastScanAt = new Date();
 
         await qrCode.save();
-        res.redirect(qrCode.destinationUrl);
-        // res.json(qrCode);
+        //res.redirect(qrCode.destinationUrl);
+        res.json(qrCode.destinationUrl);
     } catch(err){
         console.error("Error getting QR code:", err);
         res.status(500).json({ message: "Internal server error", error: err.message });

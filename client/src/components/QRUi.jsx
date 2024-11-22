@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import QRCode from "react-qr-code";
-import { saveAs } from "file-saver";
-import html2canvas from "html2canvas";
+
 import axios from "axios";
+import DownloadPng from "./DownloadPng";
+import DownloadSvg from "./DownloadSvg";
 
 const QRUi = () => {
   const [url, setUrl] = useState("");
@@ -54,27 +55,8 @@ const QRUi = () => {
     // setDestinationUrl(url);
     console.log(url, shortCode, destinationUrl);
   };
-  const downloadPNG = async () => {
-    if (!shortCode) {
-      alert("Generate a QR Code first");
-      return;
-    }
-    const canvas = await html2canvas(qrRef.current);
-    canvas.toBlob((blob) => {
-      saveAs(blob, "qrCode.png");
-    });
-  };
 
-  const downloadSVG = () => {
-    if (!shortCode) {
-      alert("Generate a QR Code first");
-      return;
-    }
-    const svgElement = document.querySelector("svg");
-    const svgData = new XMLSerializer().serializeToString(svgElement);
-    const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
-    saveAs(blob, "qrcode.svg");
-  };
+  
 
   const reloadPage = () => {
     setUrl("");
@@ -104,19 +86,8 @@ const QRUi = () => {
                 Current URL: {destinationUrl}
               </h1>
               <div className="flex justify-evenly mt-4 ">
-                <button
-                  onClick={downloadPNG}
-                  className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-500 transition"
-                >
-                  Download PNG
-                </button>
-
-                <button
-                  onClick={downloadSVG}
-                  className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-500 transition"
-                >
-                  Download SVG
-                </button>
+                <DownloadPng />
+                <DownloadSvg />
               </div>
             </div>
           )}
