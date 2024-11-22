@@ -1,9 +1,9 @@
 import { saveAs } from "file-saver";
 import html2canvas from "html2canvas";
 
-const DownloadPngButton = ({ qrRef, qrCodeValue }) => {
+const DownloadPngButton = ({ qrRef, shortCode }) => {
   const downloadPNG = async () => {
-    if (!qrCodeValue) {
+    if (!shortCode) {
       alert("Generate a QR Code first");
       return;
     }

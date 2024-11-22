@@ -1,8 +1,8 @@
 import { saveAs } from "file-saver";
 
-const DownloadSvgButton = ({ qrValue }) => {
+const DownloadSvgButton = ({ shortCode }) => {
   const downloadSVG = () => {
-    if (!qrValue) {
+    if (!shortCode) {
       alert("Generate a QR Code first");
       return;
     }
