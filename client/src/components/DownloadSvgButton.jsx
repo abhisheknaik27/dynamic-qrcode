@@ -1,9 +1,8 @@
 import { saveAs } from "file-saver";
-import html2canvas from "html2canvas";
 
-const DownloadSvg = () => {
+const DownloadSvgButton = ({ qrValue }) => {
   const downloadSVG = () => {
-    if (!shortCode) {
+    if (!qrValue) {
       alert("Generate a QR Code first");
       return;
     }
@@ -15,11 +14,11 @@ const DownloadSvg = () => {
   return (
     <button
       onClick={downloadSVG}
-      className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-500 transition"
+      className="bg-green-600 w-full text-white py-2 px-4 rounded-lg hover:bg-green-500 transition"
     >
       Download SVG
     </button>
   );
 };
 
-export default DownloadSvg;
+export default DownloadSvgButton;

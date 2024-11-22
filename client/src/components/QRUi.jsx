@@ -1,132 +1,68 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import QRCode from "react-qr-code";
-
-import axios from "axios";
-import DownloadPng from "./DownloadPng";
-import DownloadSvg from "./DownloadSvg";
-
+import DownloadPngButton from "./DownloadPngButton";
+import DownloadSvgButton from "./DownloadSvgButton";
 const QRUi = () => {
+  const [qrCodeValue, setQrCodeValue] = useState("");
   const [url, setUrl] = useState("");
-  const [shortCode, setShortCode] = useState("");
-  const [destinationUrl, setDestinationUrl] = useState("");
-
-  const qrRef = useRef(null);
-
-  useEffect(() => {
-    if (shortCode) {
-      fetchQrCode();
-    }
-  }, [shortCode]);
-
-  const generateQr = async () => {
-    if (!url) {
-      alert("Enter Valid URL");
-      return;
-    }
-
-    const response = await axios.post("http://localhost:2000/api/qrCode", {
-      destinationUrl: url,
-    });
-    setShortCode(response.data.shortCode);
-    // setDestinationUrl(url);
-
+  const qrRef = useRef();
+  function handleGenerateQr() {
+    if (url) setQrCodeValue(url);
+    else alert("Enter Valid URL");
+  }
+  function clearForm() {
+    setQrCodeValue("");
     setUrl("");
-  };
-
-  const fetchQrCode = async () => {
-    if (!shortCode) return;
-
-    const response = await axios.get(
-      `http://localhost:2000/api/qrCode/${shortCode}`
-    );
-    setDestinationUrl(response.data.destinationUrl);
-  };
-
-  const updateQr = async () => {
-    if (!destinationUrl) {
-      alert("Enter Valid URL");
-      return;
-    }
-    await axios.put(`http://localhost:2000/api/qrCode/${shortCode}`, {
-      destinationUrl: url,
-    });
-
-    alert("URL Updated Successfully");
-    // setDestinationUrl(url);
-    console.log(url, shortCode, destinationUrl);
-  };
-
-  
-
-  const reloadPage = () => {
-    setUrl("");
-    setDestinationUrl("");
-    setShortCode("");
-  };
+  }
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-400 p-4">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-md">
-        <div className="p-6 border-b border-gray-200">
-          <div className="flex items-center justify-center w-full h-40 bg-gray-50 border border-dashed border-gray-300 rounded-lg ">
-            {shortCode ? (
-              <QRCode
-                className="p-2"
-                value={`http://localhost:2000/${shortCode}`}
-                size={150}
-                ref={qrRef}
-              />
-            ) : (
-              <p className="text-gray-400">QR Code will appear here</p>
-            )}
-          </div>
-
-          {shortCode && (
-            <div>
-              <h1 className="text-center mt-4 bg-blue-100 rounded-sm font-semibold p-2">
-                Current URL: {destinationUrl}
-              </h1>
-              <div className="flex justify-evenly mt-4 ">
-                <DownloadPng />
-                <DownloadSvg />
-              </div>
+        <div className="p-4 border-b border-gray-200">
+          <h3 className="text-lg font-bold text-gray-700 text-center mb-4">
+            Preview
+          </h3>
+          <div className="flex items-center justify-center w-full h-60 bg-gray-50 border border-dashed border-gray-300 rounded-lg">
+            <div ref={qrRef}>
+              {qrCodeValue ? (
+                <QRCode value={qrCodeValue} size={200} />
+              ) : (
+                <p className="text-gray-400">QR will appear here</p>
+              )}
             </div>
-          )}
+          </div>
+          {qrCodeValue ? (
+            <div className="flex justify-between mt-5 gap-3">
+              <DownloadSvgButton qrRef={qrRef} />
+              <DownloadPngButton qrRef={qrRef} qrCodeValue={qrCodeValue} />
+            </div>
+          ) : null}
         </div>
 
         <div className="p-6">
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-600 mb-2">
-              Enter URL / Text
+              Website URL
             </label>
             <input
               type="text"
               placeholder="www.example.com"
               value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+              onChange={(e) => setUrl(e.target.value.trim())}
+              className="w-full p-3 border rounded-lg focus:outline-none focus:ring focus:ring-blue-100 text-blue-600"
             />
           </div>
-          {shortCode ? (
-            <button
-              onClick={updateQr}
-              className="w-full bg-blue-400 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-            >
-              Update QR
-            </button>
-          ) : (
-            <button
-              onClick={generateQr}
-              className="w-full bg-blue-400 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-            >
-              Generate QR Code
-            </button>
-          )}
 
           <button
-            onClick={reloadPage}
-            className="w-full bg-blue-300 text-white py-2 mt-4 rounded-lg hover:bg-blue-400 transition"
+            onClick={handleGenerateQr}
+            className="w-full bg-orange-200 text-black py-2 rounded-lg hover:bg-orange-300 transition:mb-4"
           >
-            Clear Page
+            Generate QR
+          </button>
+          <button
+            onClick={clearForm}
+            className="w-full mt-3 bg-orange-200 text-black py-2 rounded-lg hover:bg-orange-300 transition:mb-4"
+          >
+            Clear Form
           </button>
         </div>
       </div>

@@ -1,9 +1,9 @@
 import { saveAs } from "file-saver";
 import html2canvas from "html2canvas";
 
-const DownloadPng = () => {
+const DownloadPngButton = ({ qrRef, qrCodeValue }) => {
   const downloadPNG = async () => {
-    if (!shortCode) {
+    if (!qrCodeValue) {
       alert("Generate a QR Code first");
       return;
     }
@@ -12,14 +12,15 @@ const DownloadPng = () => {
       saveAs(blob, "qrCode.png");
     });
   };
+
   return (
     <button
       onClick={downloadPNG}
-      className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-500 transition"
+      className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-500 w-full transition"
     >
       Download PNG
     </button>
   );
 };
 
-export default DownloadPng;
+export default DownloadPngButton;
